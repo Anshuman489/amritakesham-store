@@ -29,7 +29,7 @@ export function HeroSection() {
             </div>
             
             <p className="text-gray-600 text-lg lg:text-xl max-w-md leading-relaxed">
-              Discover our new natural cleanser that brings out your skin's natural radiance with pure, organic ingredients.
+              Discover our new natural cleanser that brings out your skin&apos;s natural radiance with pure, organic ingredients.
             </p>
             
             <button className="bg-white border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white px-8 py-3 rounded-lg font-medium uppercase tracking-wider transition-all duration-300 text-sm">

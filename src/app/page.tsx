@@ -8,10 +8,6 @@ export default function Home() {
       <Header />
       <Navigation />
       <HeroSection />
-      {/* <section className="p-8">About Us</section>
-      <section className="p-8">Products & Quick Checkout</section>
-      <section className="p-8">Testimonials</section>
-      <section className="p-8">FAQ</section> */}
     </div>
   )
 }
