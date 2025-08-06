@@ -2,7 +2,7 @@
 
 export function Navigation() {
   return (
-    <nav className="bg-white border-b">
+    <nav className="bg-white">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center h-14">
           <div className="flex space-x-12">

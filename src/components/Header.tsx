@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { 
   Facebook,
   Twitter,
@@ -7,9 +8,9 @@ import {
   ShoppingCart
 } from "lucide-react"
 
-export function Header() {
+export function Header({ logoSrc = "/logo.png" }: { logoSrc?: string }) {
   return (
-    <header className="bg-white border-b">
+    <header className="bg-white border-b-4 border-[#15442F]">
       <div className="container mx-auto px-4 py-4">
         <div className="grid grid-cols-3 items-center">
           {/* Left side - Social Icons */}
@@ -21,13 +22,19 @@ export function Header() {
           </div>
 
           {/* Center - Logo */}
-          <div className="flex flex-col items-center justify-center text-center">
-            <div className="text-2xl lg:text-3xl font-bold text-green-600">
+          <div className="flex items-center justify-center space-x-3 logo">
+              <Image
+                src={logoSrc}
+                alt="AmrithaKesham Logo"
+                width={50}
+                height={50}
+                />
+            <div className="logo-text">
               Amrithakesham
             </div>
-            <span className="text-xs text-gray-500 uppercase tracking-wider mt-1">
+            {/* <span className="text-xs text-gray-500 uppercase tracking-wider mt-1">
               NATURAL NATURE STORE
-            </span>
+            </span> */}
           </div>
 
           {/* Right side - User and Cart Icons */}
