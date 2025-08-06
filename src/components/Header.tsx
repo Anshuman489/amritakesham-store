@@ -44,7 +44,7 @@ export function Header({ logoSrc = "/logo.png" }: { logoSrc?: string }) {
           </div>
 
           {/* Center - Logo */}
-          <div className="flex items-center justify-center space-x-3 logo">
+          <div className="flex items-center justify-center space-x-2 logo">
               <Image
                 src={logoSrc}
                 alt="AmrithaKesham Logo"
@@ -54,19 +54,16 @@ export function Header({ logoSrc = "/logo.png" }: { logoSrc?: string }) {
             <div className="logo-text">
               Amrithakesham
             </div>
-            {/* <span className="text-xs text-gray-500 uppercase tracking-wider mt-1">
-              NATURAL NATURE STORE
-            </span> */}
           </div>
 
           {/* Right side - User and Cart Icons */}
-          <div className="flex items-center justify-end space-x-2">
-            <button className="p-2 hover:bg-gray-50 rounded-md transition-colors">
-              <User className="h-5 w-5 text-gray-600" />
+          <div className="flex items-center justify-end space-x-1 sm:space-x-2">
+            <button className="p-1 sm:p-2 hover:bg-gray-50 rounded-md transition-colors">
+              <User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
             </button>
-            <button className="p-2 hover:bg-gray-50 rounded-md transition-colors relative">
-              <ShoppingCart className="h-5 w-5 text-gray-600" />
-              <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+            <button className="p-1 sm:p-2 hover:bg-gray-50 rounded-md transition-colors relative">
+              <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+              <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-green-500 text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center font-bold">
                 0
               </span>
             </button>
