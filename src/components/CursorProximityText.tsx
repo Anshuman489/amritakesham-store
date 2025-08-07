@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect, useCallback } from "react"
 import { useMousePositionRef } from "@/hooks/use-mouse-position-ref"
 
 interface CursorProximityTextProps {
@@ -27,7 +27,7 @@ export default function CursorProximityText({
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
   }
 
-  const updateLetters = () => {
+  const updateLetters = useCallback(() => {
     if (!containerRef.current) return
 
     const containerRect = containerRef.current.getBoundingClientRect()
@@ -60,15 +60,24 @@ export default function CursorProximityText({
         letterRef.style.transition = "all 0.3s ease-out"
       }
     })
-  }
+  }, [containerRef, mousePositionRef, radius])
 
   useEffect(() => {
-    const animationFrame = () => {
+    let animationId: number
+    
+    const animate = () => {
       updateLetters()
-      requestAnimationFrame(animationFrame)
+      animationId = requestAnimationFrame(animate)
     }
-    requestAnimationFrame(animationFrame)
-  }, [])
+    
+    animationId = requestAnimationFrame(animate)
+    
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId)
+      }
+    }
+  }, [updateLetters])
 
   const words = children.split(" ")
   let letterIndex = 0

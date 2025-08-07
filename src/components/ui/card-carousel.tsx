@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import Image from "next/image"
 import { Swiper, SwiperSlide } from "swiper/react"
 
@@ -30,38 +30,54 @@ export const CardCarousel: React.FC<CarouselProps> = ({
   showNavigation = true,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [isMounted, setIsMounted] = useState(false)
+  const [screenWidth, setScreenWidth] = useState(0)
+
+  useEffect(() => {
+    setIsMounted(true)
+    if (typeof window !== 'undefined') {
+      setScreenWidth(window.innerWidth)
+      const handleResize = () => setScreenWidth(window.innerWidth)
+      window.addEventListener('resize', handleResize)
+      return () => window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   const css = `
   .swiper {
     width: 100%;
-    padding-bottom: 50px;
+    padding-bottom: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
   
   .swiper-slide {
     background-position: center;
     background-size: cover;
-    width: 300px;
-    height: 300px;
+    width: 320px;
+    height: 320px;
   }
   
   @media (min-width: 640px) {
     .swiper-slide {
-      width: 400px;
-      height: 400px;
+      width: 420px;
+      height: 420px;
+    }
+    .swiper {
+      padding-left: 60px;
+      padding-right: 60px;
     }
   }
   
   @media (min-width: 1024px) {
     .swiper-slide {
-      width: 500px;
-      height: 500px;
+      width: 421px;
+      height: 421px;
     }
-  }
-  
-  .swiper-slide img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    .swiper {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
   }
   
   .swiper-3d .swiper-slide-shadow-left {
@@ -108,16 +124,41 @@ export const CardCarousel: React.FC<CarouselProps> = ({
     box-shadow: 0 3px 6px rgba(21, 68, 47, 0.3) !important;
   }
   `
+  
+  if (!isMounted) {
+    return (
+      <section className="w-full px-4 sm:px-6 lg:px-8" ref={containerRef}>
+        <style>{css}</style>
+        <div className="w-full rounded-[16px] sm:rounded-[20px] lg:rounded-[24px] border border-stone-200/60 p-2 sm:p-3 lg:p-4 shadow-lg bg-gradient-to-br from-stone-50/90 to-neutral-100/80 backdrop-blur-sm">
+          <div className="relative flex w-full flex-col rounded-[12px] sm:rounded-[16px] lg:rounded-[20px] border border-stone-100/80 bg-gradient-to-br from-stone-25/60 to-neutral-50/70 p-2 sm:p-3 lg:p-4 shadow-inner">
+            <div className="flex flex-col items-center justify-center pb-4 sm:pb-6 pt-8 sm:pt-12 lg:pt-14 w-full">
+              <div className="text-center max-w-4xl mx-auto">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl opacity-90 tracking-normal leading-tight" style={{ fontFamily: 'var(--font-pt-serif), serif' }}>
+                  A blend of earthy ingredients
+                </h3>
+              </div>
+            </div>
+            <div className="flex w-full items-center justify-center gap-4 px-2 sm:px-4">
+              <div className="w-full max-w-6xl h-[400px] flex items-center justify-center">
+                <div className="animate-pulse bg-gray-200 rounded-2xl w-full h-full"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="w-full px-4 sm:px-6 lg:px-8" ref={containerRef}>
       <style>{css}</style>
-      <div className="w-full rounded-[16px] sm:rounded-[20px] lg:rounded-[24px] border border-black/10 p-3 sm:p-4 lg:p-6 shadow-lg bg-gradient-to-br from-white to-gray-50/50 backdrop-blur-sm">
-        <div className="relative flex w-full flex-col rounded-[12px] sm:rounded-[16px] lg:rounded-[20px] border border-black/5 bg-gradient-to-br from-neutral-50/80 to-neutral-100/50 p-3 sm:p-4 lg:p-6 shadow-inner">
-          <div className="flex flex-col items-center justify-center pb-4 sm:pb-6 pt-8 sm:pt-12 lg:pt-14 w-full">
+      <div className="w-full rounded-[16px] sm:rounded-[20px] lg:rounded-[24px] border border-stone-200/60 p-3 sm:p-4 lg:p-6 shadow-lg bg-gradient-to-br from-stone-50/90 to-neutral-100/80 backdrop-blur-sm">
+        <div className="relative flex w-full flex-col rounded-[12px] sm:rounded-[16px] lg:rounded-[20px] border border-stone-100/80 bg-gradient-to-br from-stone-25/60 to-neutral-50/70 p-3 sm:p-4 lg:p-6 shadow-inner">
+          <div className="flex flex-col items-center justify-center pb-3 sm:pb-4 pt-6 sm:pt-8 lg:pt-10 w-full">
             <div className="text-center max-w-4xl mx-auto">
               <CursorProximityText
                 as="h3"
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl opacity-90 tracking-normal leading-tight"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl opacity-90 tracking-normal leading-tight"
                 style={{ fontFamily: 'var(--font-pt-serif), serif' }}
                 containerRef={containerRef as React.RefObject<HTMLDivElement>}
                 radius={120}
@@ -128,7 +169,7 @@ export const CardCarousel: React.FC<CarouselProps> = ({
           </div>
 
           <div className="flex w-full items-center justify-center gap-4 px-2 sm:px-4">
-            <div className="w-full max-w-7xl">
+            <div className="w-full max-w-6xl">
               <Swiper
                 spaceBetween={20}
                 autoplay={{
@@ -143,12 +184,12 @@ export const CardCarousel: React.FC<CarouselProps> = ({
                 coverflowEffect={{
                   rotate: 0,
                   stretch: 0,
-                  depth: 100,
-                  modifier: window.innerWidth < 640 ? 1.5 : 2.0,
+                  depth: 80,
+                  modifier: screenWidth < 640 ? 1.2 : 1.4,
                 }}
                 pagination={showPagination ? { clickable: true, dynamicBullets: false } : false}
                 navigation={
-                  showNavigation && window.innerWidth >= 768
+                  showNavigation && screenWidth >= 768
                     ? {
                         nextEl: ".swiper-button-next",
                         prevEl: ".swiper-button-prev",
@@ -159,11 +200,11 @@ export const CardCarousel: React.FC<CarouselProps> = ({
               >
                 {images.map((image, index) => (
                   <SwiperSlide key={index}>
-                    <div className="size-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div className="size-full rounded-xl sm:rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
                       <Image
                         src={image.src}
-                        width={500}
-                        height={500}
+                        width={480}
+                        height={480}
                         className="size-full object-cover hover:scale-105 transition-transform duration-500"
                         alt={image.alt}
                       />
