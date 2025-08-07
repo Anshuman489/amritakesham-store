@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, PT_Serif} from "next/font/google";
 import "./globals.css";
+import ClientLayout from "@/components/ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +33,8 @@ export default function RootLayout({
   return (
     <html 
     lang="en"
-    className={`
-        ${geistSans.variable}
-        ${geistMono.variable}
-        ${ptSerif.variable}
-      `}>
+    className={`${geistSans.variable} ${geistMono.variable} ${ptSerif.variable}`}
+    suppressHydrationWarning={true}>
       <head>
         <link rel="icon" type="image/png" href="/image.png?v=1" />
         <link rel="shortcut icon" href="/image.png?v=1" />
@@ -44,8 +42,11 @@ export default function RootLayout({
       </head>
       <body
         className="antialiased font-sans"
+        suppressHydrationWarning={true}
       >
-        {children}
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );
