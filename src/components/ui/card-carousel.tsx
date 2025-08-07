@@ -46,37 +46,49 @@ export const CardCarousel: React.FC<CarouselProps> = ({
   const css = `
   .swiper {
     width: 100%;
-    padding-bottom: 40px;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
   
   .swiper-slide {
     background-position: center;
     background-size: cover;
-    width: 320px;
-    height: 320px;
+    width: 280px;
+    height: 280px;
+  }
+  
+  @media (min-width: 480px) {
+    .swiper-slide {
+      width: 320px;
+      height: 320px;
+    }
+    .swiper {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
   }
   
   @media (min-width: 640px) {
     .swiper-slide {
-      width: 420px;
-      height: 420px;
+      width: 380px;
+      height: 380px;
     }
     .swiper {
-      padding-left: 60px;
-      padding-right: 60px;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-bottom: 40px;
     }
   }
   
   @media (min-width: 1024px) {
     .swiper-slide {
-      width: 421px;
-      height: 421px;
+      width: 424px;
+      height: 424px;
     }
     .swiper {
-      padding-left: 5px;
-      padding-right: 5px;
+      padding-left: 60px;
+      padding-right: 60px;
     }
   }
   
@@ -138,9 +150,9 @@ export const CardCarousel: React.FC<CarouselProps> = ({
                 </h3>
               </div>
             </div>
-            <div className="flex w-full items-center justify-center gap-4 px-2 sm:px-4">
-              <div className="w-full max-w-6xl h-[400px] flex items-center justify-center">
-                <div className="animate-pulse bg-gray-200 rounded-2xl w-full h-full"></div>
+            <div className="flex w-full items-center justify-center gap-2 sm:gap-4 px-1 sm:px-2 lg:px-4">
+              <div className="w-full max-w-sm sm:max-w-4xl lg:max-w-6xl h-[300px] sm:h-[350px] lg:h-[400px] flex items-center justify-center">
+                <div className="animate-pulse bg-gray-200 rounded-lg sm:rounded-2xl w-full h-full"></div>
               </div>
             </div>
           </div>
@@ -154,11 +166,11 @@ export const CardCarousel: React.FC<CarouselProps> = ({
       <style>{css}</style>
       <div className="w-full rounded-[16px] sm:rounded-[20px] lg:rounded-[24px] border border-stone-200/60 p-3 sm:p-4 lg:p-6 shadow-lg bg-gradient-to-br from-stone-50/90 to-neutral-100/80 backdrop-blur-sm">
         <div className="relative flex w-full flex-col rounded-[12px] sm:rounded-[16px] lg:rounded-[20px] border border-stone-100/80 bg-gradient-to-br from-stone-25/60 to-neutral-50/70 p-3 sm:p-4 lg:p-6 shadow-inner">
-          <div className="flex flex-col items-center justify-center pb-3 sm:pb-4 pt-6 sm:pt-8 lg:pt-10 w-full">
-            <div className="text-center max-w-4xl mx-auto">
+          <div className="flex flex-col items-center justify-center pb-2 sm:pb-3 pt-4 sm:pt-6 lg:pt-8 w-full">
+            <div className="text-center max-w-4xl mx-auto px-2">
               <CursorProximityText
                 as="h3"
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl opacity-90 tracking-normal leading-tight"
+                className="text-lg sm:text-xl md:text-2xl lg:text-4xl xl:text-5xl pb-6 sm:pb-8 lg:pb-10 opacity-90 tracking-normal leading-tight"
                 style={{ fontFamily: 'var(--font-pt-serif), serif' }}
                 containerRef={containerRef as React.RefObject<HTMLDivElement>}
                 radius={120}
@@ -168,10 +180,10 @@ export const CardCarousel: React.FC<CarouselProps> = ({
             </div>
           </div>
 
-          <div className="flex w-full items-center justify-center gap-4 px-2 sm:px-4">
-            <div className="w-full max-w-6xl">
+          <div className="flex w-full items-center justify-center gap-2 sm:gap-4 px-1 sm:px-2 lg:px-4">
+            <div className="w-full max-w-sm sm:max-w-4xl lg:max-w-6xl">
               <Swiper
-                spaceBetween={20}
+                spaceBetween={15}
                 autoplay={{
                   delay: autoplayDelay,
                   disableOnInteraction: false,
@@ -184,8 +196,8 @@ export const CardCarousel: React.FC<CarouselProps> = ({
                 coverflowEffect={{
                   rotate: 0,
                   stretch: 0,
-                  depth: 80,
-                  modifier: screenWidth < 640 ? 1.2 : 1.4,
+                  depth: screenWidth < 480 ? 60 : screenWidth < 640 ? 70 : 80,
+                  modifier: screenWidth < 480 ? 1.0 : screenWidth < 640 ? 1.1 : 1.4,
                 }}
                 pagination={showPagination ? { clickable: true, dynamicBullets: false } : false}
                 navigation={
@@ -200,11 +212,11 @@ export const CardCarousel: React.FC<CarouselProps> = ({
               >
                 {images.map((image, index) => (
                   <SwiperSlide key={index}>
-                    <div className="size-full rounded-xl sm:rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div className="size-full rounded-lg sm:rounded-xl lg:rounded-2xl overflow-hidden shadow-sm sm:shadow-md hover:shadow-lg transition-shadow duration-300">
                       <Image
                         src={image.src}
-                        width={480}
-                        height={480}
+                        width={421}
+                        height={421}
                         className="size-full object-cover hover:scale-105 transition-transform duration-500"
                         alt={image.alt}
                       />
