@@ -54,8 +54,8 @@ export const CardCarousel: React.FC<CarouselProps> = ({
   .swiper-slide {
     background-position: center;
     background-size: cover;
-    width: 280px;
-    height: 280px;
+    width: 270px;
+    height: 270px;
   }
   
   @media (min-width: 480px) {
