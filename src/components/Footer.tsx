@@ -159,7 +159,7 @@ export function Footer() {
           </div>
 
           {/* Information Column */}
-          <div className="ml-10">
+          <div className="lg:ml-10">
             {/* Mobile toggle header */}
             <button
               type="button"
@@ -269,7 +269,7 @@ export function Footer() {
           </div>
 
           {/* Useful Links Column */}
-          <div className="ml-8">
+          <div className="lg:ml-8">
             {/* Mobile toggle header */}
             <button
               type="button"
@@ -378,8 +378,8 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Newsletter Signup Column */}
-          <div>
+          {/* Newsletter Signup Column */}  
+          <div className="lg:mr-2">
             {/* Mobile toggle header */}
             <button
               type="button"
