@@ -4,7 +4,7 @@ import Image from "next/image"
 
 export function AboutSection() {
   return (
-    <section className="bg-gradient-to-br from-green-50 to-white py-16 md:py-20 lg:py-24">
+    <section className="bg-gradient-to-br from-green-50 to-white pt-16 pb-8 md:pt-20 md:pb-12 lg:pt-24 lg:pb-16">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-center max-w-7xl mx-auto">
           {/* Text Content */}

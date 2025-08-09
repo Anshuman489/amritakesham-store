@@ -70,11 +70,11 @@ export function FAQSection() {
   }
 
   return (
-    <section className="py-20 md:py-24 bg-gradient-to-b from-white to-green-50/30 relative overflow-hidden">
+    <section className="pt-10 pb-20 md:pt-16 md:pb-24 bg-gradient-to-b from-white to-green-50/30 relative overflow-hidden">
       {/* Decorative Logo Background */}
-      <div className="absolute top-10 right-10 opacity-5 hidden lg:block">
+      <div className="absolute top-5 right-10 opacity-10 hidden lg:block">
         <Image
-          src="/logo2.png"
+          src="/logo.png"
           alt="Amritakesham Logo"
           width={300}
           height={300}
@@ -85,16 +85,7 @@ export function FAQSection() {
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-green-100 flex items-center justify-center mr-4">
-              <Image
-                src="/logo2.png"
-                alt="Amritakesham Logo"
-                width={40}
-                height={40}
-                className="object-contain"
-              />
-            </div>
+          <div className="flex items-start justify-center mb-6">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal text-[#15442F] leading-tight" style={{ fontFamily: 'PT Serif, serif' }}>
               Frequently Asked Questions
             </h2>
