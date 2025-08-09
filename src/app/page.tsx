@@ -11,6 +11,7 @@ import { Cart } from "@/components/Cart"
 import { ScrollToTop } from "@/components/ScrollToTop"
 import { CertificationsBadges } from "@/components/CertificationsBadges"
 import { AboutSection } from "@/components/AboutSection"
+import { ProductCollage } from "@/components/ProductCollage"
 
 export default function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false)
@@ -30,6 +31,7 @@ export default function Home() {
       <Navigation />
       <HeroSection />
       <Carousel />
+      <ProductCollage />
       <AboutSection />
       <CertificationsBadges />
       <Footer />
