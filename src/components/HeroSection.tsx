@@ -9,6 +9,7 @@ export function HeroSection() {
   const [startX, setStartX] = useState(0)
   const [currentX, setCurrentX] = useState(0)
   const [dragOffset, setDragOffset] = useState(0) // Real-time drag offset
+  const [dragStartTime, setDragStartTime] = useState(0) // Track drag start time for velocity calculation
   const [isTransitioning, setIsTransitioning] = useState(true)
   const [isNavigating, setIsNavigating] = useState(false) // Prevent rapid navigation
   const [isButtonNavigation, setIsButtonNavigation] = useState(false) // Track button navigation specifically
@@ -70,11 +71,11 @@ export function HeroSection() {
     setIsButtonNavigation(true)
     setCurrentSlide(index + 1) // Add 1 to account for duplicate last slide at beginning
     
-    // Reset button navigation lock after shorter duration
+    // Reset button navigation lock after much shorter duration
     if (navigationTimeoutRef.current) clearTimeout(navigationTimeoutRef.current)
     navigationTimeoutRef.current = setTimeout(() => {
       setIsButtonNavigation(false)
-    }, 200) // Much shorter for dot clicks
+    }, 100) // Reduced to 100ms
   }
 
   // Navigation functions for arrow buttons with infinite scrolling
@@ -90,11 +91,16 @@ export function HeroSection() {
       setTimeout(() => {
         setIsTransitioning(false)
         setCurrentSlide(1)
-        setTimeout(() => setIsTransitioning(true), 50)
+        setTimeout(() => {
+          setIsTransitioning(true)
+          // Clear navigation lock immediately after reset to allow continuous scrolling
+          setIsButtonNavigation(false)
+        }, 50)
       }, 500)
+      return // Don't set timeout below for reset cases
     }
     
-    // Reset button navigation lock after shorter duration
+    // Reset button navigation lock after shorter duration (only for normal navigation)
     if (navigationTimeoutRef.current) clearTimeout(navigationTimeoutRef.current)
     navigationTimeoutRef.current = setTimeout(() => {
       setIsButtonNavigation(false)
@@ -113,15 +119,20 @@ export function HeroSection() {
       setTimeout(() => {
         setIsTransitioning(false)
         setCurrentSlide(slides.length)
-        setTimeout(() => setIsTransitioning(true), 50)
+        setTimeout(() => {
+          setIsTransitioning(true)
+          // Clear navigation lock immediately after reset to allow continuous scrolling
+          setIsButtonNavigation(false)
+        }, 50)
       }, 500)
+      return // Don't set timeout below for reset cases
     }
     
-    // Reset button navigation lock after shorter duration
+    // Reset button navigation lock after much shorter duration (only for normal navigation)
     if (navigationTimeoutRef.current) clearTimeout(navigationTimeoutRef.current)
     navigationTimeoutRef.current = setTimeout(() => {
       setIsButtonNavigation(false)
-    }, 200) // Much shorter for arrow clicks
+    }, 100) // Reduced to 100ms
   }
 
   // Get the active dot index - account for the duplicate slides
@@ -129,6 +140,35 @@ export function HeroSection() {
     if (currentSlide === 0) return slides.length - 1 // Duplicate last slide
     if (currentSlide === slides.length + 1) return 0 // Duplicate first slide
     return currentSlide - 1 // Actual slides (subtract 1 for duplicate last slide at start)
+  }
+
+  // Drag-specific navigation functions (bypass button navigation locks)
+  const dragToNextSlide = () => {
+    const next = currentSlide + 1
+    setCurrentSlide(next)
+    
+    if (next === slides.length + 1) {
+      // After reaching duplicate first slide, reset to actual first slide
+      setTimeout(() => {
+        setIsTransitioning(false)
+        setCurrentSlide(1)
+        setTimeout(() => setIsTransitioning(true), 50)
+      }, 500)
+    }
+  }
+
+  const dragToPrevSlide = () => {
+    const prev = currentSlide - 1
+    setCurrentSlide(prev)
+    
+    if (prev === 0) {
+      // After reaching duplicate last slide, reset to actual last slide
+      setTimeout(() => {
+        setIsTransitioning(false)
+        setCurrentSlide(slides.length)
+        setTimeout(() => setIsTransitioning(true), 50)
+      }, 500)
+    }
   }
 
   // Touch/Mouse drag handlers with real-time feedback
@@ -147,6 +187,7 @@ export function HeroSection() {
     setStartX(clientX)
     setCurrentX(clientX)
     setDragOffset(0)
+    setDragStartTime(Date.now()) // Capture start time for velocity calculation
   }
 
   const handleMove = (e: React.TouchEvent | React.MouseEvent) => {
@@ -169,25 +210,47 @@ export function HeroSection() {
     if (e) e.preventDefault()
     
     const diff = startX - currentX
-    const threshold = 50 // Threshold for slide change
+    const containerWidth = sliderRef.current?.offsetWidth || window.innerWidth
+    const dragDuration = Date.now() - dragStartTime
+    const dragDistance = Math.abs(diff)
+    
+    // Calculate drag velocity (pixels per millisecond)
+    const velocity = dragDistance / dragDuration
+    
+    // Determine if this is a quick swipe or slow drag
+    const isQuickSwipe = dragDuration < 300 && velocity > 0.3 // Quick movement
+    const isSlowDrag = dragDuration >= 300 // Slow, deliberate drag
+    
+    let shouldSlide = false
+    
+    if (isQuickSwipe) {
+      // For quick swipes, use a smaller threshold (20% of container width)
+      const swipeThreshold = containerWidth * 0.2
+      shouldSlide = dragDistance > swipeThreshold
+    } else if (isSlowDrag) {
+      // For slow drags, require 50% of container width
+      const holdThreshold = containerWidth * 0.5
+      shouldSlide = dragDistance > holdThreshold
+    }
     
     // Re-enable transitions for smooth snap
     setIsTransitioning(true)
     setDragOffset(0) // Reset drag offset
     
-    if (Math.abs(diff) > threshold) {
+    if (shouldSlide) {
       if (diff > 0) {
-        // Dragged left - go to next slide
-        goToNextSlide()
+        // Dragged left - go to next slide (bypass navigation locks)
+        dragToNextSlide()
       } else {
-        // Dragged right - go to previous slide
-        goToPrevSlide()
+        // Dragged right - go to previous slide (bypass navigation locks)
+        dragToPrevSlide()
       }
     }
     
     setIsDragging(false)
     setStartX(0)
     setCurrentX(0)
+    setDragStartTime(0)
   }
 
   return (
@@ -195,8 +258,8 @@ export function HeroSection() {
                         h-[450px]        /* base height */
                         sm:h-[500px]     /* small screens and up */
                         md:h-[550px]     /* medium screens and up */
-                        lg:h-[630px]     /* large screens and up */
-                        xl:h-[700px]     /* extra large screens */
+                        lg:h-[600px]     /* large screens and up */
+                        xl:h-[635px]     /* extra large screens */
                         overflow-hidden">
       
       {/* Slider Container */}
