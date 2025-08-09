@@ -50,7 +50,7 @@ export function Header({ logoSrc = "/logo.png", onCartClick, cartItemCount = 2 }
           </div>
 
           {/* Center - Logo */}
-          <div className="flex items-center justify-center space-x-2 logo">
+          <div className="flex items-center justify-center space-x-2 logo cursor-pointer " onClick={() => window.location.href = '/'}>
               <Image
                 src={logoSrc}
                 alt="AmrithaKesham Logo"
