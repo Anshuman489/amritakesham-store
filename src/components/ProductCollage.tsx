@@ -24,7 +24,7 @@ export function ProductCollage() {
           quality={100}
           priority={false}
         />
-        <div className="absolute inset-0 bg-white/60"></div>
+        <div className="absolute inset-0 bg-white/65"></div>
       </div>
 
       <div className="relative z-10 container mx-auto px-4 md:px-6">
