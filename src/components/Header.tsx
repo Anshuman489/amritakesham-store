@@ -67,7 +67,7 @@ export function Header({ logoSrc = "/logo.png" }: { logoSrc?: string }) {
               onClick={() => setIsCartOpen(true)}
               className="p-1 sm:p-2 hover:bg-gray-50 rounded-md transition-colors relative"
             >
-              <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+              <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 cursor-pointer" />
               <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-green-500 text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center font-bold">
                 2
               </span>
