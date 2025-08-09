@@ -229,7 +229,7 @@ export function HeroSection() {
       shouldSlide = dragDistance > swipeThreshold
     } else if (isSlowDrag) {
       // For slow drags, require 50% of container width
-      const holdThreshold = containerWidth * 0.5
+      const holdThreshold = containerWidth * 0.3
       shouldSlide = dragDistance > holdThreshold
     }
     
