@@ -1,6 +1,15 @@
 "use client"
 import { useState, useEffect, useRef } from "react"
 
+// Define a type for testimonials
+interface Testimonial {
+  id: number;
+  name: string;
+  location: string;
+  rating: number;
+  review: string;
+}
+
 // Star Rating Component
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -23,9 +32,9 @@ function StarRating({ rating }: { rating: number }) {
 
 // Testimonial Card Component
 function TestimonialCard({ testimonial, onHover, onLeave }: { 
-  testimonial: any
-  onHover: () => void
-  onLeave: () => void
+  testimonial: Testimonial;
+  onHover: () => void;
+  onLeave: () => void;
 }) {
   return (
     <div 
@@ -37,12 +46,11 @@ function TestimonialCard({ testimonial, onHover, onLeave }: {
         <div className="mb-3">
           <StarRating rating={testimonial.rating} />
         </div>
-        
+        {/* Use single quotes to avoid unescaped double quote error */}
         <p className="text-gray-700 text-xs leading-relaxed line-clamp-4 mb-3" style={{ fontFamily: 'DM Sans, sans-serif' }}>
-          "{testimonial.review}"
+          {'"'}{testimonial.review}{'"'}
         </p>
       </div>
-      
       <div className="flex items-center mt-auto">
         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white font-semibold text-xs mr-2 flex-shrink-0">
           {testimonial.name.split(' ').map((n: string) => n[0]).join('')}
@@ -225,7 +233,7 @@ export function TestimonialsSection() {
               className="flex"
             >
               {/* First set of testimonials */}
-              {displayTestimonials.map((testimonial: any, index: number) => (
+              {displayTestimonials.map((testimonial: Testimonial, index: number) => (
                 <div key={`first-${testimonial.id}-${index}`} className="flex-shrink-0">
                   <TestimonialCard 
                     testimonial={testimonial} 
@@ -236,7 +244,7 @@ export function TestimonialsSection() {
               ))}
               
               {/* Second set for seamless loop */}
-              {displayTestimonials.map((testimonial: any, index: number) => (
+              {displayTestimonials.map((testimonial: Testimonial, index: number) => (
                 <div key={`second-${testimonial.id}-${index}`} className="flex-shrink-0">
                   <TestimonialCard 
                     testimonial={testimonial} 
