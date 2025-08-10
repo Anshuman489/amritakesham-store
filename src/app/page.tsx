@@ -6,6 +6,7 @@ import { SmartHeader } from "@/components/SmartHeader"
 import { Navigation } from "@/components/Navigation"
 import { HeroSection } from "@/components/HeroSection"
 import { Carousel } from "@/components/Carousel"
+import { ProductDetails } from "@/components/ProductDetails"
 import { Footer } from "@/components/Footer"
 import { Cart } from "@/components/Cart"
 import { ScrollToTop } from "@/components/ScrollToTop"
@@ -33,6 +34,7 @@ export default function Home() {
       <Navigation />
       <HeroSection />
       <Carousel />
+      <ProductDetails />
       <ProductCollage />
       <AboutSection />
       <CertificationsBadges />

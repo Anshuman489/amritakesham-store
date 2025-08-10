@@ -13,6 +13,7 @@ module.exports = {
         sans: ['var(--font-geist-sans)', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'monospace'],
         serif: ['var(--font-pt-serif)', 'serif'],
+        'dm-sans': ['var(--font-dm-sans)', 'DM Sans', 'sans-serif'],
       },
     },
   },

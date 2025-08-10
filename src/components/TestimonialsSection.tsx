@@ -31,7 +31,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 // Testimonial Card Component
-function TestimonialCard({ testimonial, onHover, onLeave }: { 
+function TestimonialCard({ testimonial, onHover, onLeave }: {
   testimonial: Testimonial;
   onHover: () => void;
   onLeave: () => void;
@@ -46,9 +46,8 @@ function TestimonialCard({ testimonial, onHover, onLeave }: {
         <div className="mb-3">
           <StarRating rating={testimonial.rating} />
         </div>
-        {/* Use single quotes to avoid unescaped double quote error */}
         <p className="text-gray-700 text-xs leading-relaxed line-clamp-4 mb-3" style={{ fontFamily: 'DM Sans, sans-serif' }}>
-          {'"'}{testimonial.review}{'"'}
+          {'“'}{testimonial.review}{'”'}
         </p>
       </div>
       <div className="flex items-center mt-auto">
@@ -71,65 +70,18 @@ function TestimonialCard({ testimonial, onHover, onLeave }: {
 export function TestimonialsSection() {
   const [isPaused, setIsPaused] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
+  const [isHoveringContainer, setIsHoveringContainer] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
   const marqueeRef = useRef<HTMLDivElement>(null)
-
-  const testimonials = [
-    {
-      id: 1,
-      name: "Priya Sharma",
-      location: "Mumbai, Maharashtra",
-      rating: 5,
-      review: "Love these natural products! My hair is so soft and healthy now. Highly recommended!"
-    },
-    {
-      id: 2,
-      name: "Anjali Gupta",
-      location: "Delhi, India",
-      rating: 5,
-      review: "Amazing hair oil! Been using for 3 months. Hair fall reduced and beautiful shine."
-    },
-    {
-      id: 3,
-      name: "Meera Patel",
-      location: "Ahmedabad, Gujarat",
-      rating: 4,
-      review: "Great service and authentic products. Beautiful packaging. Curly hair more manageable."
-    },
-    {
-      id: 4,
-      name: "Kavya Reddy",
-      location: "Hyderabad, Telangana",
-      rating: 5,
-      review: "Impressed with natural ingredients! Hair texture improved dramatically. Love it!"
-    },
-    {
-      id: 5,
-      name: "Ritu Agarwal",
-      location: "Jaipur, Rajasthan",
-      rating: 4,
-      review: "Excellent range! Traditional recipes that work. Hair feels nourished and healthier."
-    },
-    {
-      id: 6,
-      name: "Sneha Nair",
-      location: "Kochi, Kerala",
-      rating: 5,
-      review: "Outstanding quality! Gentle yet effective products. Will definitely repurchase!"
-    }
-  ]
-
-  // No duplication needed - CSS will handle the infinite scroll
-  const displayTestimonials = testimonials
 
   // Mouse drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true)
     setStartX(e.pageX - (containerRef.current?.offsetLeft || 0))
     setScrollLeft(containerRef.current?.scrollLeft || 0)
-    setIsPaused(true)
+    setIsPaused(true) // pause while dragging
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -142,59 +94,75 @@ export function TestimonialsSection() {
 
   const handleMouseUp = () => {
     setIsDragging(false)
-    setTimeout(() => setIsPaused(false), 1000) // Resume after 1 second
+    // Only resume if we're NOT hovering the container
+    if (!isHoveringContainer) setIsPaused(false)
   }
 
-  const handleMouseLeave = () => {
+  const handleContainerEnter = () => {
+    setIsHoveringContainer(true)
+    setIsPaused(true) // stay paused as long as cursor is anywhere over the slider
+  }
+
+  const handleContainerLeave = () => {
+    setIsHoveringContainer(false)
     setIsDragging(false)
-    setTimeout(() => setIsPaused(false), 1000)
+    setIsPaused(false) // resume only when cursor leaves the whole slider
   }
 
-  const handleCardHover = () => {
-    setIsPaused(true)
-  }
-
+  const handleCardHover = () => setIsPaused(true)
   const handleCardLeave = () => {
-    setIsPaused(false)
+    // Do not resume here; resume only on container leave
+    if (!isHoveringContainer && !isDragging) setIsPaused(false)
   }
 
-  // Infinite marquee scroll effect (JS-based, pixel-perfect pause)
+  // Infinite marquee scroll effect (JS-based)
   useEffect(() => {
-    let frame: number;
-    const speed = 0.5; // px per frame
+    let frame: number
+    const speed = 0.5 // px per frame
     function animate() {
-      const c = containerRef.current;
+      const c = containerRef.current
       if (c && !isPaused && !isDragging) {
-        c.scrollLeft += speed;
+        c.scrollLeft += speed
         if (c.scrollLeft >= c.scrollWidth / 2) {
-          c.scrollLeft = c.scrollLeft - c.scrollWidth / 2;
+          c.scrollLeft = c.scrollLeft - c.scrollWidth / 2
         }
       }
-      frame = requestAnimationFrame(animate);
+      frame = requestAnimationFrame(animate)
     }
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, [isPaused, isDragging]);
+    frame = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(frame)
+  }, [isPaused, isDragging])
 
   // Seamless loop on manual scroll/drag
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const container = containerRef.current
+    if (!container) return
 
     function handleScroll() {
-      const c = containerRef.current;
-      if (!c) return;
+      const c = containerRef.current
+      if (!c) return
       if (c.scrollLeft >= c.scrollWidth / 2) {
-        c.scrollLeft = c.scrollLeft - c.scrollWidth / 2;
+        c.scrollLeft = c.scrollLeft - c.scrollWidth / 2
       }
     }
 
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
+    container.addEventListener('scroll', handleScroll, { passive: true })
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const testimonials = [
+    { id: 1, name: "Priya Sharma", location: "Mumbai, Maharashtra", rating: 5, review: "Love these natural products! My hair is so soft and healthy now. Highly recommended!" },
+    { id: 2, name: "Anjali Gupta", location: "Delhi, India", rating: 5, review: "Amazing hair oil! Been using for 3 months. Hair fall reduced and beautiful shine." },
+    { id: 3, name: "Meera Patel", location: "Ahmedabad, Gujarat", rating: 4, review: "Great service and authentic products. Beautiful packaging. Curly hair more manageable." },
+    { id: 4, name: "Kavya Reddy", location: "Hyderabad, Telangana", rating: 5, review: "Impressed with natural ingredients! Hair texture improved dramatically. Love it!" },
+    { id: 5, name: "Ritu Agarwal", location: "Jaipur, Rajasthan", rating: 4, review: "Excellent range! Traditional recipes that work. Hair feels nourished and healthier." },
+    { id: 6, name: "Sneha Nair", location: "Kochi, Kerala", rating: 5, review: "Outstanding quality! Gentle yet effective products. Will definitely repurchase!" }
+  ]
+
+  const displayTestimonials = testimonials
 
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-b from-green-50/30 to-white relative overflow-hidden">
+    <section className="py-20 md:py-26 bg-gradient-to-b from-green-50/30 to-white relative overflow-hidden">
       {/* Background Decoration */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 left-10 w-32 h-32 bg-green-400 rounded-full blur-3xl"></div>
@@ -205,7 +173,6 @@ export function TestimonialsSection() {
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
           <div className="flex items-start justify-center mb-6">
-            <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-green-500 mt-2 md:mt-3 mr-4 flex-shrink-0"></div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal text-[#15442F] leading-tight" style={{ fontFamily: 'PT Serif, serif' }}>
               What our users have to say
             </h2>
@@ -221,12 +188,11 @@ export function TestimonialsSection() {
           <div 
             ref={containerRef}
             className="overflow-hidden cursor-grab active:cursor-grabbing select-none"
+            onMouseEnter={handleContainerEnter}
+            onMouseLeave={handleContainerLeave}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseLeave}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseOut={() => setIsPaused(false)}
           >
             <div 
               ref={marqueeRef}
@@ -254,20 +220,6 @@ export function TestimonialsSection() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Status Indicator */}
-        <div className="text-center mt-8">
-          <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm transition-all duration-300 ${
-            isPaused 
-              ? 'text-orange-600 bg-orange-50 border border-orange-200' 
-              : 'text-green-600 bg-green-50 border border-green-200'
-          }`}>
-            <div className={`w-2 h-2 rounded-full mr-2 ${isPaused ? 'bg-orange-500' : 'bg-green-500 animate-pulse'}`}></div>
-            <span style={{ fontFamily: 'DM Sans, sans-serif' }}>
-              {isPaused ? 'Paused • Hover to pause, drag to scroll' : 'Auto-scrolling • Hover to pause, drag to scroll'}
-            </span>
           </div>
         </div>
       </div>
