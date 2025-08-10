@@ -1,3 +1,12 @@
+// Cart item type for localStorage
+interface CartItem {
+  id: string;
+  name: string;
+  color: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
 "use client";
 import Image from "next/image";
 import { useState } from "react";
@@ -93,9 +102,9 @@ export function ProductDetails() {
             className="w-full sm:w-auto flex-1 py-3 rounded-full border border-green-700 text-green-800 font-semibold text-base sm:text-lg hover:bg-green-50 transition font-dm-sans cursor-pointer"
             onClick={() => {
               // Add to cart logic: store in localStorage and dispatch event
-              const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+              const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
               const productId = `amrithakesham-hair-oil-${selectedSize.label}`;
-              const existing = cart.find((item: any) => item.id === productId);
+              const existing = cart.find((item: CartItem) => item.id === productId);
               if (existing) {
                 existing.quantity += quantity;
               } else {
