@@ -14,9 +14,9 @@ export function ProductDetails() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-  <section className="w-full min-h-[520px] md:min-h-[600px] bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-14 flex flex-col md:flex-row gap-6 md:gap-16 items-center justify-center relative overflow-hidden transition-all duration-300 font-dm-sans">
-      {/* Left: Product Image and Price Badges */}
-  <div className="relative w-full max-w-[260px] sm:max-w-xs md:max-w-sm flex-shrink-0 mb-4 md:mb-0">
+    <section id="product-details" className="w-full min-h-[650px] md:min-h-[700px] bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-14 flex flex-col md:flex-row gap-6 md:gap-16 items-center justify-center relative overflow-hidden transition-all duration-300 font-dm-sans">
+      {/* Left: Product Image */}
+      <div className="relative w-full max-w-[260px] sm:max-w-xs md:max-w-sm flex-shrink-0 mb-4 md:mb-0">
         <div className="rounded-2xl overflow-hidden">
           <Image
             src="/hairoil.png"
@@ -89,8 +89,33 @@ export function ProductDetails() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 font-dm-sans w-full">
-          <button className="w-full sm:w-auto flex-1 py-3 rounded-full border border-green-700 text-green-800 font-semibold text-base sm:text-lg hover:bg-green-50 transition font-dm-sans">ADD TO BAG</button>
-          <button className="w-full sm:w-auto flex-1 py-3 rounded-full bg-green-700 text-white font-semibold text-base sm:text-lg hover:bg-green-800 transition font-dm-sans">BUY NOW</button>
+          <button
+            className="w-full sm:w-auto flex-1 py-3 rounded-full border border-green-700 text-green-800 font-semibold text-base sm:text-lg hover:bg-green-50 transition font-dm-sans cursor-pointer"
+            onClick={() => {
+              // Add to cart logic: store in localStorage and dispatch event
+              const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+              const productId = `amrithakesham-hair-oil-${selectedSize.label}`;
+              const existing = cart.find((item: any) => item.id === productId);
+              if (existing) {
+                existing.quantity += quantity;
+              } else {
+                cart.push({
+                  id: productId,
+                  name: "AmrithaKesham Hair Oil",
+                  color: selectedSize.label,
+                  price: selectedSize.price,
+                  quantity,
+                  image: "/hairoil.png",
+                });
+              }
+              localStorage.setItem("cart", JSON.stringify(cart));
+              window.dispatchEvent(new Event("cart-updated"));
+              window.dispatchEvent(new CustomEvent("open-cart"));
+            }}
+          >
+            ADD TO BAG
+          </button>
+          <button className="w-full sm:w-auto flex-1 py-3 rounded-full bg-green-700 text-white font-semibold text-base sm:text-lg hover:bg-green-800 transition font-dm-sans cursor-pointer">BUY NOW</button>
         </div>
       </div>
     </section>

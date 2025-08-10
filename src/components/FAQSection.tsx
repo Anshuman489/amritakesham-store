@@ -70,7 +70,7 @@ export function FAQSection() {
   }
 
   return (
-    <section className="pt-10 pb-20 md:pt-20 md:pb-24 bg-gradient-to-b from-white to-green-50/30 relative overflow-hidden">
+    <section className="pt-10 pb-20 md:pt-16 md:pb-24 bg-gradient-to-b from-white to-green-50/30 relative overflow-hidden">
       {/* Decorative Logo Background */}
       <div className="absolute top-5 right-10 opacity-10 hidden lg:block">
         <Image

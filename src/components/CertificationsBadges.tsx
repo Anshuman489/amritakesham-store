@@ -32,7 +32,7 @@ export function CertificationsBadges() {
   ]
 
   return (
-    <section className="bg-gray-50 py-12 md:py-16">
+    <section className="bg-gray-50 py-8 md:py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 lg:gap-12">
           {certifications.map((cert) => (
