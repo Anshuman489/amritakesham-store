@@ -13,6 +13,7 @@ import { CertificationsBadges } from "@/components/CertificationsBadges"
 import { AboutSection } from "@/components/AboutSection"
 import { ProductCollage } from "@/components/ProductCollage"
 import { FAQSection } from "@/components/FAQSection"
+import { TestimonialsSection } from "@/components/TestimonialsSection"
 
 export default function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false)
@@ -35,6 +36,7 @@ export default function Home() {
       <ProductCollage />
       <AboutSection />
       <CertificationsBadges />
+      <TestimonialsSection />
       <FAQSection />
       <Footer />
       

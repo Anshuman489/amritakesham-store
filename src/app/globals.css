@@ -145,4 +145,55 @@
   body {
     @apply font-sans bg-background text-foreground;
   }
+
+  /* True Infinite Marquee Animation */
+  @keyframes infinite-marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-infinite-marquee {
+    animation: infinite-marquee 30s linear infinite;
+    width: calc(260px * 12); /* 6 testimonials × 2 sets × 260px each */
+  }
+
+  .animate-infinite-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  /* Legacy animations for backward compatibility */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-33.333%);
+    }
+  }
+
+  @keyframes infinite-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 45s linear infinite;
+  }
+
+  .animate-infinite-scroll {
+    animation: infinite-scroll 30s linear infinite;
+  }
+
+  .animate-marquee:hover,
+  .animate-infinite-scroll:hover {
+    animation-play-state: paused;
+  }
 }
