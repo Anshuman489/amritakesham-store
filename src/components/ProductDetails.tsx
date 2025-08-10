@@ -14,9 +14,9 @@ export function ProductDetails() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-  <section className="w-full min-h-[520px] md:min-h-[600px] bg-white rounded-2xl shadow-lg p-6 md:p-14 flex flex-col md:flex-row gap-8 md:gap-16 items-center justify-center relative overflow-hidden transition-all duration-300 font-dm-sans">
+  <section className="w-full min-h-[520px] md:min-h-[600px] bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-14 flex flex-col md:flex-row gap-6 md:gap-16 items-center justify-center relative overflow-hidden transition-all duration-300 font-dm-sans">
       {/* Left: Product Image and Price Badges */}
-      <div className="relative w-full max-w-xs md:max-w-sm">
+  <div className="relative w-full max-w-[260px] sm:max-w-xs md:max-w-sm flex-shrink-0 mb-4 md:mb-0">
         <div className="rounded-2xl overflow-hidden">
           <Image
             src="/hairoil.png"
@@ -30,13 +30,13 @@ export function ProductDetails() {
       </div>
 
       {/* Right: Product Details */}
-      <div className="flex-1 w-full max-w-lg">
-        <h2 className="text-3xl md:text-4xl font-serif text-[#185B3C] mb-2">AmrithaKesham Hair Oil</h2>
-        <div className="text-xl md:text-2xl text-green-800 font-medium mb-4 font-dm-sans">Rs. {selectedSize.price} <span className="text-base font-normal">(inr)</span></div>
-        <p className="text-gray-600 mb-6 text-base md:text-lg font-dm-sans">Beautiful hair begins here, get yours now</p>
-        <div className="mb-4 font-dm-sans">
+  <div className="flex-1 w-full max-w-lg flex flex-col">
+  <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#185B3C] mb-2 text-center md:text-left">AmrithaKesham Hair Oil</h2>
+  <div className="text-lg sm:text-xl md:text-2xl text-green-800 font-medium mb-4 font-dm-sans text-center md:text-left">Rs. {selectedSize.price} <span className="text-base font-normal">(inr)</span></div>
+  <p className="text-gray-600 mb-6 text-sm sm:text-base md:text-lg font-dm-sans text-center md:text-left">Beautiful hair begins here, get yours now</p>
+  <div className="mb-4 font-dm-sans w-full flex flex-col items-center md:items-start">
           <label className="block text-gray-700 mb-1 font-medium font-dm-sans">Select size</label>
-          <div className="relative w-56 select-none">
+          <div className="relative w-full max-w-xs select-none">
             <button
               type="button"
               className="w-full flex items-center justify-between border border-green-400 rounded-xl px-5 py-3 bg-green-50 text-green-900 font-semibold shadow-sm hover:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 transition font-dm-sans"
@@ -68,19 +68,19 @@ export function ProductDetails() {
             )}
           </div>
         </div>
-        <div className="mb-6 font-dm-sans">
+  <div className="mb-6 font-dm-sans w-full flex flex-col items-center md:items-start">
           <label className="block text-gray-700 mb-1 font-medium font-dm-sans">Select Quantity</label>
-          <div className="flex items-center gap-4 font-dm-sans">
+          <div className="flex items-center gap-3 sm:gap-4 font-dm-sans">
             <button
-              className="w-8 h-8 rounded-full border border-green-400 text-green-700 flex items-center justify-center text-xl font-bold hover:bg-green-50 font-dm-sans"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-green-400 text-green-700 flex items-center justify-center text-lg sm:text-xl font-bold hover:bg-green-50 font-dm-sans"
               onClick={() => setQuantity(q => Math.max(1, q - 1))}
               aria-label="Decrease quantity"
             >
               –
             </button>
-            <span className="text-xl font-semibold text-green-900 w-8 text-center font-dm-sans">{quantity}</span>
+            <span className="text-lg sm:text-xl font-semibold text-green-900 w-8 text-center font-dm-sans">{quantity}</span>
             <button
-              className="w-8 h-8 rounded-full border border-green-400 text-green-700 flex items-center justify-center text-xl font-bold hover:bg-green-50 font-dm-sans"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-green-400 text-green-700 flex items-center justify-center text-lg sm:text-xl font-bold hover:bg-green-50 font-dm-sans"
               onClick={() => setQuantity(q => q + 1)}
               aria-label="Increase quantity"
             >
@@ -88,9 +88,9 @@ export function ProductDetails() {
             </button>
           </div>
         </div>
-        <div className="flex gap-4 mt-4 font-dm-sans">
-          <button className="flex-1 py-3 rounded-full border border-green-700 text-green-800 font-semibold text-lg hover:bg-green-50 transition font-dm-sans">ADD TO BAG</button>
-          <button className="flex-1 py-3 rounded-full bg-green-700 text-white font-semibold text-lg hover:bg-green-800 transition font-dm-sans">BUY NOW</button>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 font-dm-sans w-full">
+          <button className="w-full sm:w-auto flex-1 py-3 rounded-full border border-green-700 text-green-800 font-semibold text-base sm:text-lg hover:bg-green-50 transition font-dm-sans">ADD TO BAG</button>
+          <button className="w-full sm:w-auto flex-1 py-3 rounded-full bg-green-700 text-white font-semibold text-base sm:text-lg hover:bg-green-800 transition font-dm-sans">BUY NOW</button>
         </div>
       </div>
     </section>

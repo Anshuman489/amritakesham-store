@@ -1,10 +1,13 @@
-"use client"
+"use client";
 
-import Image from "next/image"
+import Image from "next/image";
 
 export function AboutSection() {
   return (
-    <section className="bg-gradient-to-br from-green-50 to-white pt-16 pb-8 md:pt-20 md:pb-12 lg:pt-24 lg:pb-16">
+    <section
+      id="about-us-section"
+      className="bg-gradient-to-br from-green-50 to-white pt-16 pb-8 md:pt-20 md:pb-12 lg:pt-24 lg:pb-16"
+    >
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-center max-w-7xl mx-auto">
           {/* Text Content */}
@@ -13,30 +16,39 @@ export function AboutSection() {
               <div className="inline-block px-3 py-1 md:px-4 md:py-2 bg-green-100 text-green-800 rounded-full text-xs md:text-sm font-medium">
                 Our Story
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-[#15442F] leading-tight" style={{ fontFamily: 'PT Serif, serif' }}>
+              <h2
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-[#15442F] leading-tight"
+                style={{ fontFamily: "PT Serif, serif" }}
+              >
                 More About AmrithaKesham
               </h2>
             </div>
-            
+
             <div className="w-16 md:w-20 h-1 bg-gradient-to-r from-green-600 to-green-400 rounded-full"></div>
-            
-            <div className="space-y-4 md:space-y-6 text-gray-700 leading-relaxed" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+
+            <div
+              className="space-y-4 md:space-y-6 text-gray-700 leading-relaxed"
+              style={{ fontFamily: "DM Sans, sans-serif" }}
+            >
               <p className="text-base sm:text-lg md:text-xl text-gray-800 leading-relaxed">
-                Amrithakesham is a heartfelt venture by <span className="font-semibold text-[#15442F]">Amrith Sreejith</span>, a 
-                homemaker residing in Bengaluru for over 35 years. Known 
-                for her luscious, long hair, Amrith often received inquiries 
-                about her hair care secrets.
+                Amrithakesham is a heartfelt venture by{" "}
+                <span className="font-semibold text-[#15442F]">
+                  Amrith Sreejith
+                </span>
+                , a homemaker residing in Bengaluru for over 35 years. Known for
+                her luscious, long hair, Amrith often received inquiries about
+                her hair care secrets.
               </p>
-              
+
               <p className="text-base sm:text-lg md:text-xl leading-relaxed">
-                During the COVID-19 lockdown, she experimented with various 
-                natural ingredients to develop a hair oil recipe that not only 
-                enhanced her hair health but also inspired her to share it with 
+                During the COVID-19 lockdown, she experimented with various
+                natural ingredients to develop a hair oil recipe that not only
+                enhanced her hair health but also inspired her to share it with
                 others.
               </p>
-              
+
               <p className="text-base sm:text-lg md:text-xl leading-relaxed font-medium text-[#15442F]">
-                This small-scale business has grown significantly, with weekly 
+                This small-scale business has grown significantly, with weekly
                 sales of over 5 liters to friends, family, and loyal customers.
               </p>
             </div>
@@ -56,7 +68,7 @@ export function AboutSection() {
                   quality={100}
                   priority={true}
                   style={{
-                    objectPosition: 'center 20%'
+                    objectPosition: "center 20%",
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
@@ -66,5 +78,5 @@ export function AboutSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
