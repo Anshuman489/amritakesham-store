@@ -1,3 +1,4 @@
+"use client";
 // Cart item type for localStorage
 interface CartItem {
   id: string;
@@ -7,7 +8,6 @@ interface CartItem {
   quantity: number;
   image: string;
 }
-"use client";
 import Image from "next/image";
 import { useState } from "react";
 

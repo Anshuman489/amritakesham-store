@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { X, Plus, Minus, Edit, Trash2, Shield, Award } from "lucide-react"
+import { X, Plus, Minus, Trash2} from "lucide-react"
 import Image from "next/image"
 
 interface CartItem {

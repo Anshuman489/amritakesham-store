@@ -110,7 +110,7 @@ export function ProductCollage() {
           {/* Tablet Layout - 3x2 Perfect Rectangle */}
           <div className="hidden sm:block md:hidden">
             <div className="grid grid-cols-3 grid-rows-2 gap-3 aspect-[3/2] p-5">
-              {products.map((product, index) => (
+              {products.map((product) => (
                 <div key={product.id} className="relative z-10 group cursor-pointer rounded-xl overflow-hidden shadow-md">
                   <Image
                     src={product.image}
@@ -127,7 +127,7 @@ export function ProductCollage() {
           {/* Mobile Layout - 2x3 Perfect Rectangle */}
           <div className="sm:hidden">
             <div className="grid grid-cols-2 grid-rows-3 gap-2 aspect-[2/3] p-4">
-              {products.map((product, index) => (
+              {products.map((product) => (
                 <div key={product.id} className="relative z-10 group cursor-pointer rounded-lg overflow-hidden shadow-sm">
                   <Image
                     src={product.image}

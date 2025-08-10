@@ -99,7 +99,7 @@ export function FAQSection() {
         {/* FAQ Grid */}
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 md:items-start">
-            {faqs.map((faq, index) => (
+            {faqs.map((faq) => (
               <div
                 key={`faq-${faq.id}`}
                 className={`rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl self-start ${
