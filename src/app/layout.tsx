@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, PT_Serif, Poppins, DM_Sans} from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  PT_Serif,
+  Poppins,
+  DM_Sans,
+} from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,24 +22,24 @@ const geistMono = Geist_Mono({
 
 const ptSerif = PT_Serif({
   variable: "--font-pt-serif",
-  weight: ["400","700"],
+  weight: ["400", "700"],
   subsets: ["latin"],
   display: "swap",
-})
+});
 
 const poppins = Poppins({
   variable: "--font-poppins",
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
-})
+});
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   weight: ["400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
-})
+});
 
 export const metadata: Metadata = {
   title: "Amrithakesham",
@@ -45,21 +52,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html 
-    lang="en"
-    className={`${geistSans.variable} ${geistMono.variable} ${ptSerif.variable} ${poppins.variable} ${dmSans.variable}`}
-    suppressHydrationWarning={true}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${ptSerif.variable} ${poppins.variable} ${dmSans.variable}`}
+      suppressHydrationWarning={true}
+    >
       <head>
         <link rel="icon" type="image/png" href="/image.png?v=1" />
         <link rel="shortcut icon" href="/image.png?v=1" />
         <link rel="apple-touch-icon" href="/image.png?v=1" />
       </head>
-      <body
-        className="antialiased font-sans"
-        suppressHydrationWarning={true}
-      >
+      <body className="antialiased font-sans" suppressHydrationWarning={true}>
         <ClientLayout>
           {children}
+          <Toaster />
         </ClientLayout>
       </body>
     </html>

@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { 
+import { useState, useEffect, useRef } from "react"
+
+import {
   Facebook,
   Twitter,
   Instagram,
@@ -9,8 +10,11 @@ import {
   User,
   ShoppingCart,
   Menu,
-  X
+  X,
 } from "lucide-react"
+import { authClient } from "@/lib/auth-client";
+import { Logout } from "./logout";
+import Link from "next/link";
 import Image from "next/image"
 
 interface SmartHeaderProps {
@@ -23,6 +27,34 @@ export function SmartHeader({ onCartClick, cartItemCount = 2, logoSrc = "/logo.p
   const [isVisible, setIsVisible] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
+  const isLoggedIn = !!user;
+  const name = user?.name ?? (user?.email ? user.email.split("@")[0] : undefined) ?? "there";
+  // Dropdown close on outside click/scroll/Escape
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+      if (toggleRef.current?.contains(target)) return;
+      if (dropdownRef.current?.contains(target)) return;
+      setShowDropdown(false);
+    }
+    function handleScroll() { setShowDropdown(false); }
+    function handleKeydown(e: KeyboardEvent) { if (e.key === "Escape") setShowDropdown(false); }
+    if (showDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      document.addEventListener("keydown", handleKeydown);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  }, [showDropdown]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -115,11 +147,63 @@ export function SmartHeader({ onCartClick, cartItemCount = 2, logoSrc = "/logo.p
           </div>
 
           {/* Right side - User and Cart Icons */}
-          <div className="flex items-center justify-end space-x-1 sm:space-x-2">
-            <button className="p-1 sm:p-2 hover:bg-gray-200 rounded-md transition-colors cursor-pointer">
+          <div className="flex items-center justify-end space-x-1 sm:space-x-2 relative">
+            <button
+              ref={toggleRef}
+              className="p-1 sm:p-2 hover:bg-gray-200 rounded-md transition-colors cursor-pointer"
+              onClick={() => setShowDropdown((prev) => !prev)}
+              aria-haspopup="menu"
+              aria-expanded={showDropdown}
+              aria-label="User menu"
+            >
               <User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
             </button>
-            <button 
+            {showDropdown && (
+              <div
+                ref={dropdownRef}
+                className="absolute right-0 top-12 z-50 min-w-[180px] bg-white border border-gray-200 rounded-xl shadow-lg flex flex-col py-2 px-0 animate-fade-in"
+              >
+                {/* Arrow */}
+                <div className="absolute -top-2 right-4 w-4 h-4 bg-white border-l border-t border-gray-200 rotate-45 z-10"></div>
+                {/* Profile section */}
+                <div className="px-4 py-3 border-b border-gray-100 text-sm text-gray-700 font-medium flex items-center gap-2">
+                  <User className="h-5 w-5 text-gray-500" />
+                  {isPending
+                    ? "Checking..."
+                    : isLoggedIn
+                    ? `Hi, ${name}`
+                    : "Welcome!"}
+                </div>
+                <div className="flex flex-col py-1 z-10">
+                  {isLoggedIn ? (
+                    <>
+                      <Link
+                        href="/account"
+                        className="px-4 py-2 hover:bg-gray-50 transition-colors text-left text-sm rounded-md"
+                        onClick={() => setShowDropdown(false)}
+                      >
+                        My Account
+                      </Link>
+                      <div
+                        className="px-2 pt-1"
+                        onClick={() => setShowDropdown(false)}
+                      >
+                        <Logout />
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      href="/login"
+                      className="px-4 py-2 hover:bg-gray-50 transition-colors text-left text-sm cursor-pointer rounded-md"
+                      onClick={() => setShowDropdown(false)}
+                    >
+                      Login
+                    </Link>
+                  )}
+                </div>
+              </div>
+            )}
+            <button
               onClick={handleCartClick}
               className="p-1 sm:p-2 hover:bg-gray-200 rounded-md transition-colors relative cursor-pointer"
             >
