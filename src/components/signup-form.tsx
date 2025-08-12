@@ -56,7 +56,6 @@ export function SignupForm({
       provider: "google",
       callbackURL: "/",
     });
-    toast.success("Logged in with Google successfully!");
   };
 
   // 2. Define a submit handler.
