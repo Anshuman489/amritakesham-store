@@ -51,10 +51,9 @@ export function LoginForm({
   });
   const signInWithGoogle = async () => {
     await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/",
-      });
-    toast.success("Logged in with Google successfully!");
+      provider: "google",
+      callbackURL: "/",
+    });
   };
 
   // 2. Define a submit handler.
@@ -147,7 +146,11 @@ export function LoginForm({
                       </Link>
                     </div>
                   </div>
-                  <Button type="submit" className="w-full cursor-pointer" disabled={isLoading}>
+                  <Button
+                    type="submit"
+                    className="w-full cursor-pointer"
+                    disabled={isLoading}
+                  >
                     {isLoading ? (
                       <Loader2 className="size-4 animate-spin" />
                     ) : (
