@@ -1,25 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Header } from "@/components/Header";
-import { SmartHeader } from "@/components/SmartHeader";
-import { Navigation } from "@/components/Navigation";
-import { HeroSection } from "@/components/HeroSection";
-import { Carousel } from "@/components/Carousel";
-import { ProductDetails } from "@/components/ProductDetails";
-import { Footer } from "@/components/Footer";
-import { Cart } from "@/components/Cart";
-import { ScrollToTop } from "@/components/ScrollToTop";
-import { CertificationsBadges } from "@/components/CertificationsBadges";
-import { AboutSection } from "@/components/AboutSection";
-import { ProductCollage } from "@/components/ProductCollage";
-import { FAQSection } from "@/components/FAQSection";
-import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { useState, useEffect } from "react"
+import { useCartStore } from "@/store/cartStore"
+import { Header } from "@/components/Header"
+import { SmartHeader } from "@/components/SmartHeader"
+import { Navigation } from "@/components/Navigation"
+import { HeroSection } from "@/components/HeroSection"
+import { Carousel } from "@/components/Carousel"
+import { ProductDetails } from "@/components/ProductDetails"
+import { Footer } from "@/components/Footer"
+import { Cart } from "@/components/Cart"
+import { ScrollToTop } from "@/components/ScrollToTop"
+import { CertificationsBadges } from "@/components/CertificationsBadges"
+import { AboutSection } from "@/components/AboutSection"
+import { ProductCollage } from "@/components/ProductCollage"
+import { FAQSection } from "@/components/FAQSection"
+import { TestimonialsSection } from "@/components/TestimonialsSection"
 
 export default function Home() {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const [isCartOpen, setIsCartOpen] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+  const cartCount = useCartStore((s) => s.items.length)
 
   const handleCartOpen = () => {
     setIsCartOpen(true);
@@ -41,20 +42,7 @@ export default function Home() {
     return () => window.removeEventListener("open-cart", openCartHandler);
   }, []);
 
-  // Sync cart count with localStorage
-  useEffect(() => {
-    const updateCartCount = () => {
-      try {
-        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        setCartCount(cart.length);
-      } catch {
-        setCartCount(0);
-      }
-    };
-    updateCartCount();
-    window.addEventListener("cart-updated", updateCartCount);
-    return () => window.removeEventListener("cart-updated", updateCartCount);
-  }, []);
+
 
   return (
     <div>

@@ -1,18 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { X, Plus, Minus, Trash2} from "lucide-react"
-import Image from "next/image"
 
-interface CartItem {
-  id: string
-  name: string
-  color: string
-  price: number
-  originalPrice?: number
-  quantity: number
-  image: string
-}
+import { useCartStore, CartItem } from "@/store/cartStore";
+import { useState, useEffect } from "react";
+import { X, Plus, Minus, Trash2} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+
+// CartItem type comes from Zustand store
 
 interface CartProps {
   isOpen: boolean
@@ -20,31 +15,11 @@ interface CartProps {
 }
 
 export function Cart({ isOpen, onClose }: CartProps) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const cartItems = useCartStore((s) => s.items);
+  const updateQuantity = useCartStore((s) => s.updateQty);
+  const removeItem = useCartStore((s) => s.removeItem);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  // Load cart from localStorage
-  const syncCartFromStorage = () => {
-    try {
-      const stored = localStorage.getItem("cart");
-      if (stored) {
-        setCartItems(JSON.parse(stored));
-      } else {
-        setCartItems([]);
-      }
-    } catch {
-      setCartItems([]);
-    }
-  };
-
-  useEffect(() => {
-    syncCartFromStorage();
-    const handler = () => syncCartFromStorage();
-    window.addEventListener("cart-updated", handler);
-    return () => window.removeEventListener("cart-updated", handler);
-  }, []);
-
-  // Keep all products selected by default, and sync when cartItems change
   useEffect(() => {
     setSelectedIds(cartItems.map(item => item.id));
   }, [cartItems]);
@@ -52,28 +27,9 @@ export function Cart({ isOpen, onClose }: CartProps) {
   const freeShippingThreshold = 100;
   const selectedSubtotal = cartItems
     .filter(item => selectedIds.includes(item.id))
-    .reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    .reduce((sum, item) => sum + (item.price * item.qty), 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
-
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const updated = cart.map((item: CartItem) =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    );
-    localStorage.setItem("cart", JSON.stringify(updated));
-    setCartItems(updated);
-    window.dispatchEvent(new Event("cart-updated"));
-  };
-
-  const removeItem = (id: string) => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const updated = cart.filter((item: CartItem) => item.id !== id);
-    localStorage.setItem("cart", JSON.stringify(updated));
-    setCartItems(updated);
-    window.dispatchEvent(new Event("cart-updated"));
-  };
 
   // Prevent body scroll when cart is open
   useEffect(() => {
@@ -169,7 +125,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
                   {/* Product Image */}
                   <div className="w-16 h-16 bg-white rounded-lg overflow-hidden flex-shrink-0">
                     <Image
-                      src={item.image}
+                      src={item.image || "/placeholder.svg"}
                       alt={item.name}
                       width={64}
                       height={64}
@@ -180,15 +136,10 @@ export function Cart({ isOpen, onClose }: CartProps) {
                   {/* Product Details */}
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium text-gray-900 truncate">{item.name}</h3>
-                    <p className="text-sm text-gray-500">{item.color}</p>
+                      {/* color property removed, not present in Zustand cart */}
                     
                     {/* Price */}
                     <div className="flex items-center gap-2 mt-1">
-                      {item.originalPrice && (
-                        <span className="text-sm text-gray-400 line-through">
-                          ₹{item.originalPrice?.toLocaleString()}
-                        </span>
-                      )}
                       <span className="font-bold text-orange-600">
                         ₹{item.price.toLocaleString()}
                       </span>
@@ -197,9 +148,9 @@ export function Cart({ isOpen, onClose }: CartProps) {
                     {/* Quantity Controls */}
                     <div className="flex items-center justify-between mt-3">
                       <div className="flex items-center border border-gray-300 rounded-md">
-                        {item.quantity > 1 ? (
+                        {item.qty > 1 ? (
                           <button
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            onClick={() => updateQuantity(item.id, item.qty - 1)}
                             className="p-1 hover:bg-gray-100 transition-colors cursor-pointer"
                           >
                             <Minus className="h-4 w-4 text-gray-600" />
@@ -214,10 +165,10 @@ export function Cart({ isOpen, onClose }: CartProps) {
                           </button>
                         )}
                         <span className="px-3 py-1 text-sm font-medium">
-                          {item.quantity}
+                          {item.qty}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.id, item.qty + 1)}
                           className="p-1 hover:bg-gray-100 transition-colors cursor-pointer"
                         >
                           <Plus className="h-4 w-4 text-gray-600" />
@@ -257,12 +208,12 @@ export function Cart({ isOpen, onClose }: CartProps) {
 
             {/* Action Buttons */}
             <div className="space-y-2">
-              <button className="w-full bg-gray-100 text-gray-900 py-3 px-4 rounded-md font-medium hover:bg-gray-200 transition-colors cursor-pointer">
-                VIEW CART
-              </button>
-              <button className="w-full bg-cyan-400 text-white py-3 px-4 rounded-md font-medium hover:bg-cyan-500 transition-colors cursor-pointer">
-                CHECK OUT
-              </button>
+             
+              <Link href="/checkout">
+                <button className="w-full bg-cyan-400 text-white py-3 px-4 rounded-md font-medium hover:bg-cyan-500 transition-colors cursor-pointer">
+                  View Cart
+                </button>
+              </Link>
             </div>
           </div>
         )}

@@ -1,13 +1,6 @@
 "use client";
-// Cart item type for localStorage
-interface CartItem {
-  id: string;
-  name: string;
-  color: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+import { useCartStore } from "@/store/cartStore";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -21,7 +14,8 @@ export function ProductDetails() {
   const [selectedSize, setSelectedSize] = useState(SIZES[0]);
   const [quantity, setQuantity] = useState(2);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const addItem = useCartStore((s) => s.addItem);
+  const router = useRouter();
   return (
     <section id="product-details" className="w-full min-h-[650px] md:min-h-[700px] bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-14 flex flex-col md:flex-row gap-6 md:gap-16 items-center justify-center relative overflow-hidden transition-all duration-300 font-dm-sans">
       {/* Left: Product Image */}
@@ -101,30 +95,39 @@ export function ProductDetails() {
           <button
             className="w-full sm:w-auto flex-1 py-3 rounded-full border border-green-700 text-green-800 font-semibold text-base sm:text-lg hover:bg-green-50 transition font-dm-sans cursor-pointer"
             onClick={() => {
-              // Add to cart logic: store in localStorage and dispatch event
-              const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
               const productId = `amrithakesham-hair-oil-${selectedSize.label}`;
-              const existing = cart.find((item: CartItem) => item.id === productId);
-              if (existing) {
-                existing.quantity += quantity;
-              } else {
-                cart.push({
-                  id: productId,
-                  name: "AmrithaKesham Hair Oil",
-                  color: selectedSize.label,
-                  price: selectedSize.price,
-                  quantity,
-                  image: "/hairoil.png",
-                });
-              }
-              localStorage.setItem("cart", JSON.stringify(cart));
-              window.dispatchEvent(new Event("cart-updated"));
+              addItem({
+                id: productId,
+                name: "AmrithaKesham Hair Oil",
+                price: selectedSize.price,
+                qty: quantity,
+                image: "/hairoil.png",
+                size: selectedSize.label,
+              });
               window.dispatchEvent(new CustomEvent("open-cart"));
             }}
           >
             ADD TO BAG
           </button>
-          <button className="w-full sm:w-auto flex-1 py-3 rounded-full bg-green-700 text-white font-semibold text-base sm:text-lg hover:bg-green-800 transition font-dm-sans cursor-pointer">BUY NOW</button>
+          <button
+            className="w-full sm:w-auto flex-1 py-3 rounded-full bg-green-700 text-white font-semibold text-base sm:text-lg hover:bg-green-800 transition font-dm-sans cursor-pointer"
+            onClick={() => {
+              const productId = `amrithakesham-hair-oil-${selectedSize.label}`;
+              addItem({
+                id: productId,
+                name: "AmrithaKesham Hair Oil",
+                price: selectedSize.price,
+                qty: quantity,
+                image: "/hairoil.png",
+                size: selectedSize.label,
+              }, { replace: true });
+              setTimeout(() => {
+                router.push("/checkout");
+              }, 50);
+            }}
+          >
+            BUY NOW
+          </button>
         </div>
       </div>
     </section>
